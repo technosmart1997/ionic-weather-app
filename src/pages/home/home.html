@@ -1,18 +1,116 @@
-<ion-header>
+<ion-header class="header">
   <ion-navbar>
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Home</ion-title>
+    <ion-title>{{cityname}}</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <h3>Ionic Menu Starter</h3>
+<ion-content [ngStyle]="{'background-image': 'url(' + bgUrl + ')'}" class="main_wrapper" >
 
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will show you the way.
-  </p>
+    <ion-fab  right bottom >
+        <button ion-fab color="danger" (click)="searchPage()"><ion-icon name="add"></ion-icon></button>
+       
+      </ion-fab>
+  <div *ngIf="weather">
+      <ion-card class="card_wrapper">
 
-  <button ion-button secondary menuToggle>Toggle Menu</button>
+       
+        
+          <ion-card-content>
+              <ion-grid>
+                <ion-row>
+                  <ion-col col-4 offset-1>
+                      <img class="icon" src="https://{{weather.current.condition.icon}}"/>
+                      
+                  </ion-col>
+                  <ion-col col-5 offset-1 class="temp">
+                      <h1>{{weather.current.temp_c | number: '1.0-0'}}&deg;</h1>
+                  </ion-col>
+                  <ion-col col-1>
+                     
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col col-11  offset-1 class="desc">
+                      <h1>{{weather.current.condition.text}}</h1> 
+                    </ion-col>
+                </ion-row>
+               
+                  <br>
+                  <ion-row>
+                      <ion-col col-6 offset-1 class="wind">
+                        <p>Wind Speed : {{weather.current.wind_kph}}&nbsp;kph</p>
+                        <p>Wind Direction : {{weather.current.wind_dir}} </p>
+                      </ion-col>
+                      <ion-col col-3 offset-2 class="wind">
+                        <p>Feel : {{ weather.current.feelslike_c | number: '1.0-0'}} &deg;</p>            
+                      </ion-col>
+                  </ion-row>
+              </ion-grid>
+
+          </ion-card-content>
+        
+        </ion-card>
+        <!-- <br> -->
+        <ion-card class="card_wrapper">
+          <ion-card-content>
+           
+            <ion-grid>
+              <ion-list class="forecast_list">
+              <ion-item *ngFor="let day of weather.forecast.forecastday" class="item">
+                <ion-row>
+                  <ion-col col-3>
+                     <h2> {{getDay(day.date_epoch)}}</h2>
+                  </ion-col>
+                  <ion-col col-3>
+                      <!-- {{ day.date_epoch}} -->
+                  </ion-col>
+                  <ion-col col-1>
+
+                  </ion-col>
+                  <ion-col col-2>
+                    <img src="https://{{day.day.condition.icon}}" /> 
+                  </ion-col>
+
+                  <ion-col col-1>
+                    <ion-col col-2>
+                      <h2>
+                        {{day.day.mintemp_c | number: '1.0-0'}}&deg;&nbsp;/&nbsp;{{day.day.maxtemp_c | number: '1.0-0'}}&deg;
+                      </h2>
+                    </ion-col>
+                  </ion-col>
+                </ion-row>
+              </ion-item>
+            </ion-list>
+            </ion-grid>
+          </ion-card-content>
+        </ion-card>
+
+        <ion-card class="card_wrapper">
+          <ion-card-content>
+            <ion-grid>
+              <ion-row>
+                <ion-col col-6>
+                  <h3>Humidity : {{weather.current.humidity}}%</h3>
+                  <!-- <h3>Chance Of Rain : </h3> -->
+                  <h3>Precipitation : {{weather.current.precip_mm}}%</h3>
+                  <h3>Wind Speed : {{weather.current.wind_kph}}</h3>
+                  <h3>Wind Direction : {{weather.current.wind_dir}} </h3>
+                  <!-- <h3>Dew Point : </h3> -->
+                </ion-col>
+                <ion-col col-6>
+                  <h3>Sunrise : {{weather.forecast.forecastday[0].astro.sunrise}} </h3>
+                  <h3>Sunset :  {{weather.forecast.forecastday[0].astro.sunset}} </h3>
+                  <h3>Cloud Cover : {{weather.current.cloud}}%</h3>
+                  <h3>Pressure : {{weather.current.pressure_mb}}mbar</h3>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-card-content>
+        </ion-card>
+
+  </div>
+   
 </ion-content>
